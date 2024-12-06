@@ -14,7 +14,7 @@ public class BulletController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
        // transform.Translate(Vector2.up * moveSpeed);
-       // rb.velocity = Vector2.up * moveSpeed;
+      //  rb.velocity = Vector2.up * moveSpeed;
     }
 
     // Update is called once per frame

@@ -47,7 +47,7 @@ public class EnemyController : MonoBehaviour
         if (collision.gameObject.tag == "Bullet")
         {
             Instantiate(expolisionEffectPrefab, transform.position, Quaternion.identity);
-
+            Debug.Log("enemy hit");
             Destroy(gameObject);
         }
 

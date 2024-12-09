@@ -339,6 +339,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.848221, y: 8.831163}
   m_EdgeRadius: 0
+--- !u!114 &386365316
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 386365310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8bb31f540969b0841b1e632bfe4b5bda, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -657,14 +669,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1459723386}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: -0, z: -0, w: -1}
   m_LocalPosition: {x: 0.06, y: -3.777, z: 0}
   m_LocalScale: {x: 0.34, y: 0.34, z: 0.34}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2116276236}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 360, y: 0, z: 0}
 --- !u!95 &1459723389
 Animator:
   serializedVersion: 5
@@ -726,12 +738,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hp: 3
-  moveSpeed: 2
+  moveSpeed: 3
   minXValue: {fileID: 770677164}
   maxXValue: {fileID: 1056316857}
   bulletPrefab: {fileID: 3450017130027585697, guid: e503b96fe44adc94383963a7dc2fd274, type: 3}
   gunEndPosition: {fileID: 2116276236}
   fireRate: 0.2
+  anim: {fileID: 0}
 --- !u!70 &1459723393
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -951,6 +964,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5479311995275899555, guid: bd72168ead7d83445bb045cd25e2c7b0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 386365315}
+    - targetCorrespondingSourceObject: {fileID: 5479311995275899555, guid: bd72168ead7d83445bb045cd25e2c7b0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 386365316}
   m_SourcePrefab: {fileID: 100100000, guid: bd72168ead7d83445bb045cd25e2c7b0, type: 3}
 --- !u!1001 &6178797606453563906
 PrefabInstance:

@@ -16,12 +16,13 @@ public class PlayerController : MonoBehaviour
 
     public float fireRate = 0.2f;
     private float timeSinceLastAction = 0f;
-
+    public Animator anim;
 
     // Start is called before the first frame update
     void Start()
     {
         GameManager.playerController = this;
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -59,6 +60,7 @@ public class PlayerController : MonoBehaviour
         {
             transform.position = new Vector2(minXValue.position.x, transform.position.y);
         }
+        anim.SetFloat("Horizontal", horizontalInputValue);
     }
 
     void Shoot()

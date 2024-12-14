@@ -1,32 +1,52 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    public string difficulty = "Easy";  // Make this public to show in the Inspector
     public float speed = 0.6f;
+    public float fireRate = 1f;
+    public float health = 1f;
 
     public Transform playerTransform;
-
-    public float fireRate = 1f;
-    private float timeSinceLastAction = 0f;
-
     public GameObject bulletPrefab;
     public Transform enemyGunEnd;
-
     public GameObject expolisionEffectPrefab;
 
-    // Start is called before the first frame update
+    private float timeSinceLastAction = 0f;
+
     void Start()
     {
-        // transform.Translate(Vector2.down * speed * Time.deltaTime);
+        // Call SetDifficulty with the difficulty set in the inspector or by the spawner
+        SetDifficulty(difficulty);
+
         GameObject playerGameObject = GameObject.Find("Player");
         playerTransform = playerGameObject.transform;
-
-       
     }
 
-    // Update is called once per frame
+    public void SetDifficulty(string difficulty)
+    {
+        switch (difficulty)
+        {
+            case "Easy":
+                speed = 0.6f;
+                fireRate = 3f;
+                health = 1f;
+                break;
+
+            case "Medium":
+                speed = 1.0f;
+                fireRate = 2f;
+                health = 2f;
+                break;
+
+            case "Hard":
+                speed = 1.5f;
+                fireRate = 1f;
+                health = 3f;
+                break;
+        }
+    }
+
     void Update()
     {
         transform.Translate(Vector2.down * speed * Time.deltaTime);
@@ -39,23 +59,6 @@ public class EnemyController : MonoBehaviour
             GameManager.playerController.HittedByBullet();
             Destroy(gameObject);
         }
-
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.tag == "Bullet")
-        {
-            Instantiate(expolisionEffectPrefab, transform.position, Quaternion.identity);
-            Debug.Log("enemy hit");
-            Destroy(gameObject);
-        }
-
-        if (collision.gameObject.tag == "Player")
-        {
-            GameManager.playerController.HittedByBullet();
-            Destroy(gameObject);
-        }
     }
 
     void Shoot()
@@ -64,10 +67,8 @@ public class EnemyController : MonoBehaviour
 
         if (timeSinceLastAction >= fireRate)
         {
-
             Instantiate(bulletPrefab, enemyGunEnd.position, Quaternion.identity);
-            timeSinceLastAction = 0;
+            timeSinceLastAction = 0f;
         }
-
     }
 }

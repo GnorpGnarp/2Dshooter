@@ -1050,6 +1050,10 @@ PrefabInstance:
       propertyPath: playerTransform
       value: 
       objectReference: {fileID: 1459723388}
+    - target: {fileID: 6714828268464488676, guid: 115f0ae00e91dd44c8019fb9db1b7ad1, type: 3}
+      propertyPath: expolisionEffectPrefab
+      value: 
+      objectReference: {fileID: 100012, guid: 1f1aa87040db08846a4332981b0a6fa7, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

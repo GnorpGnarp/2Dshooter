@@ -117,5 +117,6 @@ public class PlayerController : MonoBehaviour
 
         // Now show the Game Over screen
         SceneManager.LoadScene("GameOverScene");
+        GetComponent<Canvas>().gameObject.SetActive(true);
     }
 }

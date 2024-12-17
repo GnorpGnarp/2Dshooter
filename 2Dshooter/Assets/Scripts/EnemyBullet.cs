@@ -7,34 +7,26 @@ public class EnemyBulletController : MonoBehaviour
     public float speed = 3f;
     public Rigidbody2D rb;
 
-    // Direction variable
+    // Direction of bullet movement
     private Vector3 direction;
 
     public GameObject bulletExplosionEffect;
+    public float damage = 1f; // Damage value for enemy bullet
 
-    // Y position threshold where the bullet will be destroyed (adjust for your screen size)
+    // Y position threshold where the bullet will be destroyed
     public float destroyYValue = -6f;
 
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-
-        // If you want to track the player, leave this as is
-        // playerTransform = GameObject.Find("Player").GetComponent<Transform>();
-        // direction = (playerTransform.position - transform.position).normalized;
-
-        // For downward movement, we'll just set the direction to be straight down
-        direction = Vector3.down;
+        direction = Vector3.down; // Enemy bullets move downwards
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Move the bullet downward with the specified speed
         transform.Translate(direction * speed * Time.deltaTime);
-
-        // Destroy the bullet when it moves below the screen
         if (transform.position.y < destroyYValue)
         {
             Destroy(gameObject);
@@ -43,15 +35,22 @@ public class EnemyBulletController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Handle collision with the player
-        if (collision.gameObject.tag == "Player")
+        // If the bullet hits the player
+        if (collision.gameObject.CompareTag("Player"))
         {
-            GameManager.playerController.HittedByBullet();
+            // Get the PlayerController and apply damage
+            PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
+            if (playerController != null)
+            {
+                playerController.TakeDamage(damage); // Apply damage to the player
+            }
+
+            // Destroy the bullet after hitting the player
             Destroy(gameObject);
         }
 
-        // Handle collision with another bullet (creating explosion effect)
-        if (collision.gameObject.tag == "Bullet")
+        // If the bullet hits another bullet (explosion effect)
+        if (collision.gameObject.CompareTag("Bullet"))
         {
             Instantiate(bulletExplosionEffect, transform.position, Quaternion.identity);
             Destroy(gameObject);

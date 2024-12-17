@@ -81,11 +81,41 @@ public class PlayerController : MonoBehaviour
     {
         if (isInvincible) return;  // Prevent further damage if the player is in invincibility frame
 
-        GameManager.uiManager.DisableHpSprite(hp);
-        hp = hp - 1;
+        // Only disable HP sprite if the player has health (hp > 0)
+        if (hp > 0)
+        {
+            GameManager.uiManager.DisableHpSprite(hp);  // Disable sprite based on current HP
+        }
+
+        hp = hp - 1;  // Decrease HP
         Debug.Log("Player Hit! HP: " + hp);
 
-        StartCoroutine(InvincibilityFrames());  // Start the invincibility frames after being hit
+        // If hp is less than or equal to 0, trigger death sequence
+        if (hp <= 0)
+        {
+            StartCoroutine(PlayerDeathSequence());
+        }
+        else
+        {
+            StartCoroutine(InvincibilityFrames());  // Start the invincibility frames after being hit
+        }
+    }
+
+    public void TakeDamage(float damage)
+    {
+        if (isInvincible) return;  // Prevent further damage if the player is in invincibility frame
+
+        hp -= (int)damage;  // Decrease HP by the damage value
+
+        if (hp > 0)
+        {
+            GameManager.uiManager.DisableHpSprite(hp);  // Update UI with the new HP
+            StartCoroutine(InvincibilityFrames());  // Start the invincibility frames after being hit
+        }
+        else
+        {
+            StartCoroutine(PlayerDeathSequence());  // Trigger player death if HP reaches zero
+        }
     }
 
     private IEnumerator InvincibilityFrames()

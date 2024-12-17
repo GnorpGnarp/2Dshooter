@@ -29,6 +29,15 @@ public class UIManager : MonoBehaviour
     */
     public void DisableHpSprite(int value)
     {
-        hpPointsList[value-1].SetActive(false);
+        // Ensure the value is between 1 and 3, so value - 1 is a valid index (0 to 2)
+        if (value > 0 && value <= hpPointsList.Count)  // Ensure the value is within the valid range
+        {
+            hpPointsList[value - 1].SetActive(false);  // Disable the sprite at the corresponding index
+        }
+        else
+        {
+            Debug.LogWarning("Invalid value passed to DisableHpSprite: " + value);
+        }
     }
+
 }

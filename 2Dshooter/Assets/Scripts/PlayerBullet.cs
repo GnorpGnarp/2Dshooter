@@ -6,6 +6,7 @@ public class BulletController : MonoBehaviour
 {
     public float moveSpeed = 3f;
     public Rigidbody2D rb;
+    public float damage = 1f; // Damage value for player bullet
 
     public float destroyYValue = 6f;
 
@@ -13,7 +14,6 @@ public class BulletController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-
     }
 
     // Update is called once per frame
@@ -31,8 +31,19 @@ public class BulletController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public void OnCollisionEnter2D(Collision2D collision)
     {
+        // If the bullet hits an enemy
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            EnemyController enemyController = collision.gameObject.GetComponent<EnemyController>();
+            if (enemyController != null)
+            {
+                enemyController.TakeDamage(damage);  // Apply damage to the enemy
+            }
+        }
+
+        // Destroy the bullet regardless of the collision
         Destroy(gameObject);
     }
 }

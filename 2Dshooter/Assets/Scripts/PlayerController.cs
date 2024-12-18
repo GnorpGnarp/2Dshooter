@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     public int hp = 3; // Player health points
-
     public float moveSpeed = 2f;
 
     public Transform minXValue;
@@ -29,6 +28,7 @@ public class PlayerController : MonoBehaviour
     {
         GameManager.playerController = this;
         anim = GetComponent<Animator>();
+        UpdateHealthUI();  // Ensure health UI is updated at the start
     }
 
     // Update is called once per frame
@@ -81,14 +81,12 @@ public class PlayerController : MonoBehaviour
     {
         if (isInvincible) return;  // Prevent further damage if the player is in invincibility frame
 
-        // Only disable HP sprite if the player has health (hp > 0)
         if (hp > 0)
         {
-            GameManager.uiManager.DisableHpSprite(hp);  // Disable sprite based on current HP
+            hp -= 1;  // Decrease HP
+            Debug.Log("Player Hit! HP: " + hp);
+            UpdateHealthUI();  // Update health UI
         }
-
-        hp = hp - 1;  // Decrease HP
-        Debug.Log("Player Hit! HP: " + hp);
 
         // If hp is less than or equal to 0, trigger death sequence
         if (hp <= 0)
@@ -109,7 +107,7 @@ public class PlayerController : MonoBehaviour
 
         if (hp > 0)
         {
-            GameManager.uiManager.DisableHpSprite(hp);  // Update UI with the new HP
+            UpdateHealthUI();  // Update UI with the new HP
             StartCoroutine(InvincibilityFrames());  // Start the invincibility frames after being hit
         }
         else
@@ -121,32 +119,32 @@ public class PlayerController : MonoBehaviour
     private IEnumerator InvincibilityFrames()
     {
         isInvincible = true;
-
         // Flash player or add visual effect for invincibility (optional)
         // Example: Add sprite flickering or change player color briefly
-
         yield return new WaitForSeconds(invincibilityDuration);  // Wait for the invincibility duration
-
         isInvincible = false;  // Reset invincibility after duration ends
     }
 
     // Coroutine for handling the death sequence and playing the funny explosion
     private IEnumerator PlayerDeathSequence()
     {
-        // Instantiate the funny explosion at the player's position
         if (funnyExplosionPrefab != null)
         {
             Instantiate(funnyExplosionPrefab, transform.position, Quaternion.identity);
         }
 
-        // Disable the player object so it doesn't interact with the game anymore
-        gameObject.SetActive(false);
+        gameObject.SetActive(false);  // Disable the player object
 
-        // Wait for the explosion to finish before showing the Game Over screen
-        yield return new WaitForSeconds(explosionDuration);
+        yield return new WaitForSeconds(explosionDuration);  // Wait for explosion to finish
 
         // Now show the Game Over screen
         SceneManager.LoadScene("GameOverScene");
-        GetComponent<Canvas>().gameObject.SetActive(true);
+        GetComponent<Canvas>().gameObject.SetActive(true);  // Show game over canvas
+    }
+
+    // Function to update the health UI (hearts) based on current HP
+    private void UpdateHealthUI()
+    {
+        GameManager.uiManager.DisableHpSprite(hp);  // Call UI manager to update the heart icons
     }
 }

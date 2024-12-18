@@ -33,24 +33,25 @@ public class EnemyBulletController : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    // Change this to OnTriggerEnter2D instead of OnCollisionEnter2D
+    private void OnTriggerEnter2D(Collider2D collider)
     {
         // If the bullet hits the player
-        if (collision.gameObject.CompareTag("Player"))
+        if (collider.gameObject.CompareTag("Player"))
         {
             // Get the PlayerController and apply damage
-            PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
+            PlayerController playerController = collider.gameObject.GetComponent<PlayerController>();
             if (playerController != null)
             {
                 playerController.TakeDamage(damage); // Apply damage to the player
             }
 
-            // Destroy the bullet after hitting the player
+            // Destroy the bullet after the explosion effect
             Destroy(gameObject);
         }
 
         // If the bullet hits another bullet (explosion effect)
-        if (collision.gameObject.CompareTag("Bullet"))
+        if (collider.gameObject.CompareTag("Bullet"))
         {
             Instantiate(bulletExplosionEffect, transform.position, Quaternion.identity);
             Destroy(gameObject);

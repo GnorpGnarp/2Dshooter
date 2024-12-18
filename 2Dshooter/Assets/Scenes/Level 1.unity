@@ -1048,9 +1048,9 @@ MonoBehaviour:
   hp2: {fileID: 316013414}
   hp3: {fileID: 237986156}
   hpPointsList:
-  - {fileID: 237986156}
-  - {fileID: 316013414}
   - {fileID: 2102154023}
+  - {fileID: 316013414}
+  - {fileID: 237986156}
 --- !u!1 &2102154023
 GameObject:
   m_ObjectHideFlags: 0
@@ -1169,12 +1169,20 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2274404357476921244, guid: bd72168ead7d83445bb045cd25e2c7b0, type: 3}
+      propertyPath: bulletExplosionEffect
+      value: 
+      objectReference: {fileID: 100004, guid: 6e8c7c425e5bc374daf95a774767b1e3, type: 3}
     - target: {fileID: 5479311995275899555, guid: bd72168ead7d83445bb045cd25e2c7b0, type: 3}
       propertyPath: m_Name
       value: EnemyBullet
       objectReference: {fileID: 0}
     - target: {fileID: 7885193008541879755, guid: bd72168ead7d83445bb045cd25e2c7b0, type: 3}
       propertyPath: m_BodyType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7885193008541879755, guid: bd72168ead7d83445bb045cd25e2c7b0, type: 3}
+      propertyPath: m_CollisionDetection
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9053029721438414967, guid: bd72168ead7d83445bb045cd25e2c7b0, type: 3}

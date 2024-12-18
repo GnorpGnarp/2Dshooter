@@ -90,9 +90,17 @@ public class EnemyController : MonoBehaviour
 
     private void Die()
     {
-        Debug.Log("Enemy died!");  // Log that the enemy is dying
+        // Instantiate the explosion effect at the enemy's position
+        if (expolisionEffectPrefab != null)
+        {
+            Instantiate(expolisionEffectPrefab, transform.position, Quaternion.identity);
+            Debug.Log("Explosion instantiated!");
+        }
+
+        // Destroy the enemy object
         Destroy(gameObject);
     }
+
 
 
     void OnTriggerEnter2D(Collider2D other)

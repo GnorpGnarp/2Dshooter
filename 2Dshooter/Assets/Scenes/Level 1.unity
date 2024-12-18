@@ -200,8 +200,8 @@ Transform:
   m_GameObject: {fileID: 145240526}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0576, y: -0.0441, z: 0}
-  m_LocalScale: {x: 0.5163333, y: 0.46911404, z: 1}
+  m_LocalPosition: {x: -0.0136, y: -0.0136, z: 0}
+  m_LocalScale: {x: 0.5200509, y: 0.46629936, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1165,6 +1165,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2193331027960522095, guid: bd72168ead7d83445bb045cd25e2c7b0, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5479311995275899555, guid: bd72168ead7d83445bb045cd25e2c7b0, type: 3}
       propertyPath: m_Name
       value: EnemyBullet
@@ -1267,17 +1271,9 @@ PrefabInstance:
       value: Enemy2swinhoewhiteeye
       objectReference: {fileID: 0}
     - target: {fileID: 6714828268464488676, guid: 115f0ae00e91dd44c8019fb9db1b7ad1, type: 3}
-      propertyPath: bulletPrefab
-      value: 
-      objectReference: {fileID: 5479311995275899555, guid: bd72168ead7d83445bb045cd25e2c7b0, type: 3}
-    - target: {fileID: 6714828268464488676, guid: 115f0ae00e91dd44c8019fb9db1b7ad1, type: 3}
       propertyPath: playerTransform
       value: 
       objectReference: {fileID: 1459723388}
-    - target: {fileID: 6714828268464488676, guid: 115f0ae00e91dd44c8019fb9db1b7ad1, type: 3}
-      propertyPath: expolisionEffectPrefab
-      value: 
-      objectReference: {fileID: 100012, guid: 1f1aa87040db08846a4332981b0a6fa7, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1397,17 +1393,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3515397228969244715, guid: 23c0b5aa6cf3e49458a64fca1a7d9c38, type: 3}
-      propertyPath: fireRate
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 3515397228969244715, guid: 23c0b5aa6cf3e49458a64fca1a7d9c38, type: 3}
       propertyPath: playerTransform
       value: 
       objectReference: {fileID: 1459723388}
-    - target: {fileID: 3515397228969244715, guid: 23c0b5aa6cf3e49458a64fca1a7d9c38, type: 3}
-      propertyPath: expolisionEffectPrefab
-      value: 
-      objectReference: {fileID: 100012, guid: 1f1aa87040db08846a4332981b0a6fa7, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

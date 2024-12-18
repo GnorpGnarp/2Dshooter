@@ -31,19 +31,17 @@ public class BulletController : MonoBehaviour
         }
     }
 
-    public void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        // If the bullet hits an enemy
         if (collision.gameObject.CompareTag("Enemy"))
         {
             EnemyController enemyController = collision.gameObject.GetComponent<EnemyController>();
             if (enemyController != null)
             {
                 enemyController.TakeDamage(damage);  // Apply damage to the enemy
+                Debug.Log("Bullet hit the enemy! Damage dealt: " + damage);
             }
+            Destroy(gameObject);  // Destroy the bullet
         }
-
-        // Destroy the bullet regardless of the collision
-        Destroy(gameObject);
     }
 }

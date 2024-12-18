@@ -129,12 +129,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   difficulty: Easy
   speed: 0.6
-  fireRate: 5
+  fireRate: 1.5
   health: 1
   playerTransform: {fileID: 0}
   bulletPrefab: {fileID: 5479311995275899555, guid: bd72168ead7d83445bb045cd25e2c7b0, type: 3}
   enemyGunEnd: {fileID: 6857336167910332589}
-  expolisionEffectPrefab: {fileID: 0}
+  expolisionEffectPrefab: {fileID: 100012, guid: 1f1aa87040db08846a4332981b0a6fa7, type: 3}
 --- !u!61 &9023865853097450019
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -164,7 +164,7 @@ BoxCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0.02132988, y: -0.17063141}

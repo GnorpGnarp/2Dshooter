@@ -80,17 +80,20 @@ public class EnemyController : MonoBehaviour
     public void TakeDamage(float damage)
     {
         health -= damage;
+        Debug.Log("Enemy health: " + health);  // Log health after taking damage
         if (health <= 0)
         {
-            Die();  // Handle enemy death (e.g., trigger explosion or removal)
+            Die();  // Enemy dies if health reaches 0
         }
     }
 
+
     private void Die()
     {
-        // Add death logic here (e.g., instantiate explosion effect, remove enemy)
-        Destroy(gameObject);  // For now, we simply destroy the enemy object
+        Debug.Log("Enemy died!");  // Log that the enemy is dying
+        Destroy(gameObject);
     }
+
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -98,10 +101,17 @@ public class EnemyController : MonoBehaviour
 
         if (other.CompareTag("PlayerBullet"))
         {
-            PlayerBullet playerBullet = other.GetComponent<PlayerBullet>();
-            if (playerBullet != null)
-       
-            Destroy(other.gameObject);  // Destroy the player bullet
+            Debug.Log("Bullet hit enemy!");
+
+            BulletController bulletController = other.GetComponent<BulletController>();
+            if (bulletController != null)
+            {
+                Debug.Log("Damage applied to enemy, health before damage: " + health);
+                TakeDamage(bulletController.damage);  // Apply damage from bulletController
+                Destroy(other.gameObject);  // Destroy bullet after collision
+            }
         }
     }
+
+
 }

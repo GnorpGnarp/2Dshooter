@@ -126,6 +126,8 @@ public class PlayerController : MonoBehaviour
     }
 
     // Coroutine for handling the death sequence and playing the funny explosion
+
+
     private IEnumerator PlayerDeathSequence()
     {
         if (funnyExplosionPrefab != null)

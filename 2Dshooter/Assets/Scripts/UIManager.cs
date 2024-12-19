@@ -19,7 +19,7 @@ public class UIManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     /* Player HP
@@ -34,10 +34,15 @@ public class UIManager : MonoBehaviour
         {
             hpPointsList[value - 1].SetActive(false);  // Disable the sprite at the corresponding index
         }
-        else
+        else if (value == 0)  // If health is 0 (player is dead), disable all sprites
         {
-            Debug.LogWarning("Invalid value passed to DisableHpSprite: " + value);
+            // Disable all heart UI elements
+            foreach (GameObject heart in hpPointsList)
+            {
+                heart.SetActive(false);
+            }
         }
-    }
 
+    }
 }
+

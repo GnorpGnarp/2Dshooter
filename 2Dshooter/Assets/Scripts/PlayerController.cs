@@ -23,6 +23,8 @@ public class PlayerController : MonoBehaviour
     public GameObject funnyExplosionPrefab; // The explosion effect when the player dies
     public float explosionDuration = 2f; // Duration of the explosion effect before showing the game over screen
 
+    private int extraBullets = 0;  // Number of extra bullets (multiplier)
+    private bool isBulletMultiplierActive = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -72,10 +74,36 @@ public class PlayerController : MonoBehaviour
 
         if (timeSinceLastAction >= fireRate)
         {
-            Instantiate(bulletPrefab, gunEndPosition.position, Quaternion.identity);
+            // Shoot the original bullet + any additional bullets based on power-up
+            for (int i = 0; i <= extraBullets; i++)
+            {
+                Instantiate(bulletPrefab, gunEndPosition.position, Quaternion.identity);
+            }
             timeSinceLastAction = 0;
         }
     }
+    public void IncreaseHealth()
+    {
+        if (hp < 3)
+        {
+            hp += 1;
+            UpdateHealthUI();  // Update health UI
+        }
+    }
+
+
+    public void ActivateBulletMultiplier()
+    {
+        extraBullets = 2;  // For example, shooting 3 bullets at once (1 initial + 2 extra)
+        StartCoroutine(DeactivateBulletMultiplier());  // Deactivate after a short duration
+    }
+
+    private IEnumerator DeactivateBulletMultiplier()
+    {
+        yield return new WaitForSeconds(5f);  // Bullet multiplier lasts for 5 seconds
+        extraBullets = 0;  // Reset back to normal shooting
+    }
+
 
     public void HittedByBullet()
     {

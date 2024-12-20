@@ -126,8 +126,6 @@ public class PlayerController : MonoBehaviour
     }
 
     // Coroutine for handling the death sequence and playing the funny explosion
-
-
     private IEnumerator PlayerDeathSequence()
     {
         if (funnyExplosionPrefab != null)
@@ -136,6 +134,9 @@ public class PlayerController : MonoBehaviour
         }
 
         gameObject.SetActive(false);  // Disable the player object
+
+        // Ensure health UI is updated when the player dies
+        UpdateHealthUI();  // This is needed to properly update the hearts to 0
 
         yield return new WaitForSeconds(explosionDuration);  // Wait for explosion to finish
 

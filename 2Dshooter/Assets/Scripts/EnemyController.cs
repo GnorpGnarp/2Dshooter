@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
-    public string difficulty = "Easy";
+    public string difficulty = "Easy";  // Difficulty of the enemy
     public float speed = 0.6f;
     public float fireRate = 1f;
     public float health = 1f;
@@ -10,16 +10,19 @@ public class EnemyController : MonoBehaviour
     public Transform playerTransform;
     public GameObject bulletPrefab;
     public Transform enemyGunEnd;
-    public GameObject expolisionEffectPrefab;
+    public GameObject explosionEffectPrefab;
 
     private float timeSinceLastAction = 0f;
+
+    // Define score based on difficulty
+    private int scoreValue;
 
     void Start()
     {
         SetDifficulty(difficulty);
 
+        // Find player transform (assumes player object is in the scene)
         GameObject playerGameObject = GameObject.Find("Player");
-
         if (playerGameObject != null)
         {
             playerTransform = playerGameObject.transform;
@@ -28,6 +31,9 @@ public class EnemyController : MonoBehaviour
         {
             Debug.LogError("Player GameObject not found! Please ensure the 'Player' GameObject exists in the scene.");
         }
+
+        // Set score based on difficulty
+        SetScoreBasedOnDifficulty();
     }
 
     public void SetDifficulty(string difficulty)
@@ -52,6 +58,22 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+    void SetScoreBasedOnDifficulty()
+    {
+        switch (difficulty)
+        {
+            case "Easy":
+                scoreValue = 100;  // Score for easy enemies
+                break;
+            case "Medium":
+                scoreValue = 200;  // Score for medium enemies
+                break;
+            case "Hard":
+                scoreValue = 300;  // Score for hard enemies
+                break;
+        }
+    }
+
     void Update()
     {
         transform.Translate(Vector2.down * speed * Time.deltaTime);
@@ -61,7 +83,7 @@ public class EnemyController : MonoBehaviour
 
         if (transform.position.y < -5.5f)
         {
-            GameManager.playerController.HittedByBullet();
+            GameManager.playerController.HittedByBullet();  // Handle player hit when enemy passes below screen
             Destroy(gameObject);
         }
     }
@@ -87,21 +109,21 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-
     private void Die()
     {
-        // Instantiate the explosion effect at the enemy's position
-        if (expolisionEffectPrefab != null)
+        // Instantiate explosion effect
+        if (explosionEffectPrefab != null)
         {
-            Instantiate(expolisionEffectPrefab, transform.position, Quaternion.identity);
+            Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
             Debug.Log("Explosion instantiated!");
         }
+
+        // Add score to the player when the enemy dies
+        ScoreManager.instance.AddScore(scoreValue);
 
         // Destroy the enemy object
         Destroy(gameObject);
     }
-
-
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -120,6 +142,4 @@ public class EnemyController : MonoBehaviour
             }
         }
     }
-
-
 }

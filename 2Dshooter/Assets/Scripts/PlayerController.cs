@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Audio;
 
 public class PlayerController : MonoBehaviour
 {
@@ -25,10 +26,22 @@ public class PlayerController : MonoBehaviour
     public AudioClip playerExplosionSound; // Explosion sound for the player
     private AudioSource audioSource;  // The AudioSource component
     private int extraBullets = 0;  // Number of extra bullets (multiplier)
+    public AudioMixerGroup masterVolumeGroup;
 
     // Start is called before the first frame update
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        // Assign the AudioSource to the AudioMixerGroup
+        if (masterVolumeGroup != null)
+        {
+            audioSource.outputAudioMixerGroup = masterVolumeGroup;
+        }
         GameManager.playerController = this;
         anim = GetComponent<Animator>();
         UpdateHealthUI();

@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using UnityEngine.Audio;
 public class EnemyController : MonoBehaviour
 {
     public string difficulty = "Easy";  // Difficulty of the enemy
@@ -15,7 +15,7 @@ public class EnemyController : MonoBehaviour
     public AudioClip explosionSound; // The explosion sound clip
     private AudioSource audioSource;  // The AudioSource component
     private Animator animator;  // Animator for death animation
-
+    public AudioMixerGroup masterVolumeGroup;
     private float timeSinceLastAction = 0f;
 
     // Define score based on difficulty
@@ -25,6 +25,18 @@ public class EnemyController : MonoBehaviour
 
     void Start()
     {
+        // Initialize AudioSource (only once)
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        // Assign the AudioSource to the AudioMixerGroup
+        if (masterVolumeGroup != null)
+        {
+            audioSource.outputAudioMixerGroup = masterVolumeGroup;
+        }
         SetDifficulty(difficulty);
 
         // Initialize AudioSource (only once)

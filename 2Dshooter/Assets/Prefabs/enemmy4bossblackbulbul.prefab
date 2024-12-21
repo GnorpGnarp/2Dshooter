@@ -140,6 +140,7 @@ MonoBehaviour:
   enemyGunEnd: {fileID: 5950625249429271609}
   explosionEffectPrefab: {fileID: 100012, guid: 1f1aa87040db08846a4332981b0a6fa7, type: 3}
   explosionSound: {fileID: 8300000, guid: 609b8bec0ffded54ca00e3f72cb76f10, type: 3}
+  masterVolumeGroup: {fileID: 24300002, guid: adbdc58ee95b85d4aa2933301967354b, type: 2}
 --- !u!50 &1167569862026115512
 Rigidbody2D:
   serializedVersion: 4

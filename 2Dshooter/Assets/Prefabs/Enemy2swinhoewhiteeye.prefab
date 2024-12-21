@@ -107,7 +107,7 @@ MonoBehaviour:
   playerTransform: {fileID: 0}
   bulletPrefab: {fileID: 5479311995275899555, guid: bd72168ead7d83445bb045cd25e2c7b0, type: 3}
   enemyGunEnd: {fileID: 3711654972660757279}
-  expolisionEffectPrefab: {fileID: 100012, guid: 1f1aa87040db08846a4332981b0a6fa7, type: 3}
+  explosionEffectPrefab: {fileID: 100012, guid: 1f1aa87040db08846a4332981b0a6fa7, type: 3}
 --- !u!61 &1797493002316298200
 BoxCollider2D:
   m_ObjectHideFlags: 0

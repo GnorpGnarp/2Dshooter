@@ -7,23 +7,27 @@ public class EnemyController : MonoBehaviour
     public float fireRate = 1f;
     public float health = 1f;
 
+    private static int deathCount = 0;  // Keep track of how many enemies are dying at once
     public Transform playerTransform;
     public GameObject bulletPrefab;
     public Transform enemyGunEnd;
     public GameObject explosionEffectPrefab;
     public AudioClip explosionSound; // The explosion sound clip
     private AudioSource audioSource;  // The AudioSource component
+    private Animator animator;  // Animator for death animation
 
     private float timeSinceLastAction = 0f;
 
     // Define score based on difficulty
     private int scoreValue;
 
+    private bool isDead = false;  // Flag to track if the enemy is dead
+
     void Start()
     {
         SetDifficulty(difficulty);
 
-        // Initialize AudioSource
+        // Initialize AudioSource (only once)
         audioSource = GetComponent<AudioSource>();
         if (audioSource == null)
         {
@@ -41,10 +45,12 @@ public class EnemyController : MonoBehaviour
             Debug.LogError("Player GameObject not found! Please ensure the 'Player' GameObject exists in the scene.");
         }
 
+        // Get the Animator component for death animation (if any)
+        animator = GetComponent<Animator>();
+
         // Set score based on difficulty
         SetScoreBasedOnDifficulty();
     }
-
 
     public void SetDifficulty(string difficulty)
     {
@@ -86,6 +92,8 @@ public class EnemyController : MonoBehaviour
 
     void Update()
     {
+        if (isDead) return;  // Prevent any movement or actions if the enemy is dead
+
         transform.Translate(Vector2.down * speed * Time.deltaTime);
 
         if (transform.position.y > -2)
@@ -100,6 +108,8 @@ public class EnemyController : MonoBehaviour
 
     void Shoot()
     {
+        if (isDead) return;  // Prevent shooting if the enemy is dead
+
         timeSinceLastAction += Time.deltaTime;
 
         if (timeSinceLastAction >= fireRate)
@@ -111,6 +121,8 @@ public class EnemyController : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        if (isDead) return;  // If the enemy is already dead, do not process any more damage
+
         health -= damage;
         Debug.Log("Enemy health: " + health);  // Log health after taking damage
         if (health <= 0)
@@ -119,12 +131,38 @@ public class EnemyController : MonoBehaviour
         }
     }
 
+
     private void Die()
     {
-        // Create a new AudioSource at runtime and play the sound
-        AudioSource tempAudioSource = gameObject.AddComponent<AudioSource>();
-        tempAudioSource.clip = explosionSound;
-        tempAudioSource.Play();
+        if (isDead) return;  // Prevent calling Die() multiple times
+
+        isDead = true;  // Set the enemy to dead to stop it from shooting or moving
+
+        // Increase the death count (used to adjust volume for multiple deaths)
+        deathCount++;
+
+        // Disable collider to prevent blocking bullets
+        Collider2D collider = GetComponent<Collider2D>();
+        if (collider != null)
+        {
+            collider.enabled = false;
+        }
+
+        // Adjust the explosion sound volume dynamically based on the death count
+        float volume = 0.7f;  // Default volume
+
+        // If more than 1 enemy dies at once, reduce the volume
+        if (deathCount > 1)
+        {
+            volume = 0.3f;  // Reduce volume when more than one enemy dies
+        }
+
+        // Play the explosion sound with adjusted volume
+        if (explosionSound != null)
+        {
+            audioSource.volume = volume;  // Adjust volume dynamically
+            audioSource.PlayOneShot(explosionSound);
+        }
 
         // Instantiate explosion effect
         if (explosionEffectPrefab != null)
@@ -135,11 +173,21 @@ public class EnemyController : MonoBehaviour
         // Add score to the player
         ScoreManager.instance.AddScore(scoreValue);
 
-        // Destroy the enemy object after some delay
+        // If there is an animator, play the death animation
+        if (animator != null)
+        {
+            animator.SetTrigger("Die");  // Assuming you have a "Die" trigger in your Animator
+        }
+
+        // Disable the enemy's sprite renderer immediately
+        GetComponent<SpriteRenderer>().enabled = false;
+
+        // Destroy the enemy object after some delay to allow the explosion sound and animation to play
         Destroy(gameObject, explosionSound.length);  // Ensure object is destroyed after the sound plays
+
+        // After the enemy dies, decrease the death count after a delay (or when explosion finishes)
+        deathCount--;  // Reset the count for the next enemy death
     }
-
-
 
     void OnTriggerEnter2D(Collider2D other)
     {

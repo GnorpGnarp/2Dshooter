@@ -42,8 +42,12 @@ public class PlayerController : MonoBehaviour
     }
 
     // Update is called once per frame
+    private bool isDead = false;  // Track whether the player is dead
+
     void Update()
     {
+        if (isDead) return;  // Skip the update if the player is dead
+
         PlayerMovement();
 
         if (Input.GetKey(KeyCode.Space))
@@ -53,7 +57,6 @@ public class PlayerController : MonoBehaviour
 
         if (hp <= 0)
         {
-            // If player is out of health, trigger the death sequence
             StartCoroutine(PlayerDeathSequence());
         }
     }
@@ -179,35 +182,52 @@ public class PlayerController : MonoBehaviour
     }
 
     // Coroutine for handling the death sequence and playing the funny explosion
+
+
     private IEnumerator PlayerDeathSequence()
     {
+        // If the player is already dead, stop the coroutine to avoid running it multiple times
+        if (isDead) yield break;
+
+        isDead = true;  // Set the player to dead, preventing this coroutine from running again
+
         Debug.Log("Player died and explosion should play.");
-        audioSource.mute = false;
-        if (playerExplosionSound != null)
+
+        // Disable the sprite renderer to hide the player during the explosion
+        GetComponent<SpriteRenderer>().enabled = false; // Disable sprite immediately
+
+        // Ensure audioSource is unmuted and sound plays immediately
+        if (audioSource != null)
         {
-            Debug.Log("Playing player explosion sound");
-            audioSource.PlayOneShot(playerExplosionSound);
+            audioSource.mute = false;  // Ensure it is not muted
+            if (playerExplosionSound != null)
+            {
+                Debug.Log("Playing player explosion sound");
+                audioSource.PlayOneShot(playerExplosionSound);  // Play sound immediately
+            }
         }
 
+        // Instantiate the explosion effect (only once)
         if (funnyExplosionPrefab != null)
         {
             Instantiate(funnyExplosionPrefab, transform.position, Quaternion.identity);
         }
 
-        // Play the player explosion sound
-   
+        // Wait for the explosion sound and effect to finish
+        yield return new WaitForSeconds(explosionDuration);  // Wait for explosion to finish
 
-        gameObject.SetActive(false); // Disable the player object
+        // Finally, deactivate the player object after the explosion effect and sound finish
+        gameObject.SetActive(false);  // Hide the player object
 
-        // Ensure UI is updated
-        UpdateHealthUI();
-
-        yield return new WaitForSeconds(explosionDuration); // Wait for explosion to finish
+        // Wait just a bit more, if needed (in case you want to add some delay before game over scene)
+        yield return new WaitForSeconds(0.1f);  // Optional small delay for smoother transition
 
         // Show the Game Over screen
         SceneManager.LoadScene("GameOverScene");
-        GetComponent<Canvas>().gameObject.SetActive(true); // Show game over canvas
+        GetComponent<Canvas>().gameObject.SetActive(true);  // Show game over UI
     }
+
+
 
 
     // Function to update the health UI (hearts) based on current HP

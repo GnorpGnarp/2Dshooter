@@ -77,26 +77,33 @@ public class PlayerController : MonoBehaviour
             // Log how many bullets will be instantiated
             Debug.Log("Shooting " + (extraBullets + 1) + " bullets");
 
-            // Shoot the original bullet + any additional bullets based on power-up
-            for (int i = 0; i <= extraBullets; i++)
+            // Create a spread based on the number of extra bullets
+            float spreadAngle = 15f;  // Angle of the V-shape spread
+            if (extraBullets == 2)
             {
+                // 3 bullets in a V shape
+                Instantiate(bulletPrefab, gunEndPosition.position, Quaternion.Euler(0, 0, -spreadAngle));  // Left bullet
+                Instantiate(bulletPrefab, gunEndPosition.position, Quaternion.identity);  // Center bullet
+                Instantiate(bulletPrefab, gunEndPosition.position, Quaternion.Euler(0, 0, spreadAngle));  // Right bullet
+            }
+            else
+            {
+                // Just the normal bullet
                 Instantiate(bulletPrefab, gunEndPosition.position, Quaternion.identity);
             }
+
             timeSinceLastAction = 0;
         }
     }
 
+
     public void IncreaseHealth()
     {
-        if (hp < 3)
+        if (hp < 3)  // Ensure health doesn’t go beyond the max
         {
             hp += 1;
-            UpdateHealthUI();  // Update health UI
+            GameManager.uiManager.UpdateHpSprites(hp);  // Update hearts when health increases
             Debug.Log("Health increased: " + hp);
-        }
-        else
-        {
-            Debug.Log("Player is at full health, no increase.");
         }
     }
 
@@ -123,7 +130,7 @@ public class PlayerController : MonoBehaviour
         {
             hp -= 1;  // Decrease HP
             Debug.Log("Player Hit! HP: " + hp);
-            UpdateHealthUI();  // Update health UI
+            GameManager.uiManager.UpdateHpSprites(hp);  // Update health UI after taking damage
         }
 
         // If hp is less than or equal to 0, trigger death sequence
@@ -186,6 +193,6 @@ public class PlayerController : MonoBehaviour
     // Function to update the health UI (hearts) based on current HP
     private void UpdateHealthUI()
     {
-        GameManager.uiManager.DisableHpSprite(hp);  // Call UI manager to update the heart icons
+        GameManager.uiManager.UpdateHpSprites(hp);
     }
 }

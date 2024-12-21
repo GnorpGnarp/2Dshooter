@@ -1270,8 +1270,8 @@ MonoBehaviour:
   hp2: {fileID: 316013414}
   hp3: {fileID: 237986156}
   hpPointsList:
-  - {fileID: 316013414}
   - {fileID: 2102154023}
+  - {fileID: 316013414}
   - {fileID: 237986156}
 --- !u!1 &2102154023
 GameObject:

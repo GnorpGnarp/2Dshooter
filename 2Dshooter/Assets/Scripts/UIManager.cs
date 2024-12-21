@@ -27,25 +27,23 @@ public class UIManager : MonoBehaviour
     2         1
     1         0
     */
-    public void DisableHpSprite(int value)
+    public void UpdateHpSprites(int currentHealth)
     {
-        Debug.Log("Received health value: " + value);  // This will show the value being passed to the method
-
-        // If health is greater than 0, just disable the corresponding heart sprite
-        if (value > 0 && value <= hpPointsList.Count)
+        // Loop through the heart icons in reverse order (index 2 -> 1 -> 0)
+        for (int i = 0; i < hpPointsList.Count; i++)
         {
-            Debug.Log("Disabling heart at index: " + (value - 1));
-            hpPointsList[value - 1].SetActive(false);  // Disable the heart sprite based on value
-        }
-        else if (value <= 0)  // If health is 0 or less, disable all heart sprites
-        {
-            Debug.Log("Disabling all hearts");
-            foreach (GameObject heart in hpPointsList)
+            // Enable hearts up to the current health
+            if (i < currentHealth)
             {
-                heart.SetActive(false);  // Disable all heart sprites
+                hpPointsList[hpPointsList.Count - 1 - i].SetActive(true);  // Enable hearts in reverse order
+            }
+            else
+            {
+                hpPointsList[hpPointsList.Count - 1 - i].SetActive(false);  // Disable hearts beyond current health
             }
         }
     }
+
 
 
 }

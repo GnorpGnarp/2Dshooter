@@ -1044,6 +1044,7 @@ MonoBehaviour:
   invincibilityDuration: 1
   funnyExplosionPrefab: {fileID: 100004, guid: 82019e923dca94848916b96b8f98a352, type: 3}
   explosionDuration: 2
+  playerExplosionSound: {fileID: 8300000, guid: 7c6ab537389b11a4fb0555ab3e9a18dc, type: 3}
 --- !u!70 &1459723393
 CapsuleCollider2D:
   m_ObjectHideFlags: 0

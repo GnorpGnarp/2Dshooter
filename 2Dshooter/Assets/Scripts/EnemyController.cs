@@ -11,6 +11,8 @@ public class EnemyController : MonoBehaviour
     public GameObject bulletPrefab;
     public Transform enemyGunEnd;
     public GameObject explosionEffectPrefab;
+    public AudioClip explosionSound; // The explosion sound clip
+    private AudioSource audioSource;  // The AudioSource component
 
     private float timeSinceLastAction = 0f;
 
@@ -21,7 +23,14 @@ public class EnemyController : MonoBehaviour
     {
         SetDifficulty(difficulty);
 
-        // Find player transform (assumes player object is in the scene)
+        // Initialize AudioSource
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        // Find player transform
         GameObject playerGameObject = GameObject.Find("Player");
         if (playerGameObject != null)
         {
@@ -35,6 +44,7 @@ public class EnemyController : MonoBehaviour
         // Set score based on difficulty
         SetScoreBasedOnDifficulty();
     }
+
 
     public void SetDifficulty(string difficulty)
     {
@@ -111,19 +121,25 @@ public class EnemyController : MonoBehaviour
 
     private void Die()
     {
+        // Create a new AudioSource at runtime and play the sound
+        AudioSource tempAudioSource = gameObject.AddComponent<AudioSource>();
+        tempAudioSource.clip = explosionSound;
+        tempAudioSource.Play();
+
         // Instantiate explosion effect
         if (explosionEffectPrefab != null)
         {
             Instantiate(explosionEffectPrefab, transform.position, Quaternion.identity);
-            Debug.Log("Explosion instantiated!");
         }
 
-        // Add score to the player when the enemy dies
+        // Add score to the player
         ScoreManager.instance.AddScore(scoreValue);
 
-        // Destroy the enemy object
-        Destroy(gameObject);
+        // Destroy the enemy object after some delay
+        Destroy(gameObject, explosionSound.length);  // Ensure object is destroyed after the sound plays
     }
+
+
 
     void OnTriggerEnter2D(Collider2D other)
     {

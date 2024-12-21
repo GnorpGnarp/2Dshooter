@@ -22,7 +22,8 @@ public class PlayerController : MonoBehaviour
 
     public GameObject funnyExplosionPrefab; // The explosion effect when the player dies
     public float explosionDuration = 2f; // Duration of the explosion effect before showing the game over screen
-
+    public AudioClip playerExplosionSound; // Explosion sound for the player
+    private AudioSource audioSource;  // The AudioSource component
     private int extraBullets = 0;  // Number of extra bullets (multiplier)
 
     // Start is called before the first frame update
@@ -30,7 +31,14 @@ public class PlayerController : MonoBehaviour
     {
         GameManager.playerController = this;
         anim = GetComponent<Animator>();
-        UpdateHealthUI();  // Ensure health UI is updated at the start
+        UpdateHealthUI();
+
+        // Initialize AudioSource
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
     }
 
     // Update is called once per frame
@@ -173,22 +181,34 @@ public class PlayerController : MonoBehaviour
     // Coroutine for handling the death sequence and playing the funny explosion
     private IEnumerator PlayerDeathSequence()
     {
+        Debug.Log("Player died and explosion should play.");
+        audioSource.mute = false;
+        if (playerExplosionSound != null)
+        {
+            Debug.Log("Playing player explosion sound");
+            audioSource.PlayOneShot(playerExplosionSound);
+        }
+
         if (funnyExplosionPrefab != null)
         {
             Instantiate(funnyExplosionPrefab, transform.position, Quaternion.identity);
         }
 
-        gameObject.SetActive(false);  // Disable the player object
+        // Play the player explosion sound
+   
 
-        // Ensure health UI is updated when the player dies
-        UpdateHealthUI();  // This is needed to properly update the hearts to 0
+        gameObject.SetActive(false); // Disable the player object
 
-        yield return new WaitForSeconds(explosionDuration);  // Wait for explosion to finish
+        // Ensure UI is updated
+        UpdateHealthUI();
 
-        // Now show the Game Over screen
+        yield return new WaitForSeconds(explosionDuration); // Wait for explosion to finish
+
+        // Show the Game Over screen
         SceneManager.LoadScene("GameOverScene");
-        GetComponent<Canvas>().gameObject.SetActive(true);  // Show game over canvas
+        GetComponent<Canvas>().gameObject.SetActive(true); // Show game over canvas
     }
+
 
     // Function to update the health UI (hearts) based on current HP
     private void UpdateHealthUI()

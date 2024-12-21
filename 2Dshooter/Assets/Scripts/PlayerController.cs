@@ -24,7 +24,7 @@ public class PlayerController : MonoBehaviour
     public float explosionDuration = 2f; // Duration of the explosion effect before showing the game over screen
 
     private int extraBullets = 0;  // Number of extra bullets (multiplier)
-    private bool isBulletMultiplierActive = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -74,6 +74,9 @@ public class PlayerController : MonoBehaviour
 
         if (timeSinceLastAction >= fireRate)
         {
+            // Log how many bullets will be instantiated
+            Debug.Log("Shooting " + (extraBullets + 1) + " bullets");
+
             // Shoot the original bullet + any additional bullets based on power-up
             for (int i = 0; i <= extraBullets; i++)
             {
@@ -82,26 +85,33 @@ public class PlayerController : MonoBehaviour
             timeSinceLastAction = 0;
         }
     }
+
     public void IncreaseHealth()
     {
         if (hp < 3)
         {
             hp += 1;
             UpdateHealthUI();  // Update health UI
+            Debug.Log("Health increased: " + hp);
+        }
+        else
+        {
+            Debug.Log("Player is at full health, no increase.");
         }
     }
 
-
     public void ActivateBulletMultiplier()
     {
-        extraBullets = 2;  // For example, shooting 3 bullets at once (1 initial + 2 extra)
-        StartCoroutine(DeactivateBulletMultiplier());  // Deactivate after a short duration
+        extraBullets = 2;
+        Debug.Log("Bullet multiplier activated");
+        StartCoroutine(DeactivateBulletMultiplier());
     }
 
     private IEnumerator DeactivateBulletMultiplier()
     {
-        yield return new WaitForSeconds(5f);  // Bullet multiplier lasts for 5 seconds
-        extraBullets = 0;  // Reset back to normal shooting
+        yield return new WaitForSeconds(5f);
+        extraBullets = 0;
+        Debug.Log("Bullet multiplier deactivated, extraBullets: " + extraBullets);
     }
 
 

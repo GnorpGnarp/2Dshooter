@@ -41,10 +41,10 @@ public class PowerUp : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
+        Debug.Log("PowerUp collided with: " + other.gameObject.name);  // Check the name of the object colliding
         if (other.CompareTag("Player"))
         {
             PlayerController player = other.GetComponent<PlayerController>();
-
             if (player != null)
             {
                 // Handle power-up effect
@@ -57,9 +57,9 @@ public class PowerUp : MonoBehaviour
                     player.ActivateBulletMultiplier();
                 }
 
-                // Destroy the power-up object after collection
-                Destroy(gameObject);
+                Destroy(gameObject);  // Destroy power-up
             }
         }
     }
+
 }

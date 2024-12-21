@@ -149,7 +149,7 @@ public class EnemyController : MonoBehaviour
         }
 
         // Adjust the explosion sound volume dynamically based on the death count
-        float volume = 0.7f;  // Default volume
+        float volume = 0.6f;  // Default volume
 
         // If more than 1 enemy dies at once, reduce the volume
         if (deathCount > 1)

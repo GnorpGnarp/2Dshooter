@@ -78,7 +78,7 @@ public class PlayerController : MonoBehaviour
             Debug.Log("Shooting " + (extraBullets + 1) + " bullets");
 
             // Create a spread based on the number of extra bullets
-            float spreadAngle = 15f;  // Angle of the V-shape spread
+            float spreadAngle = 20f;  // Angle of the V-shape spread
             if (extraBullets == 2)
             {
                 // 3 bullets in a V shape

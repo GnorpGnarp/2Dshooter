@@ -199,7 +199,11 @@ public class EnemyController : MonoBehaviour
 
         // After the enemy dies, decrease the death count after a delay (or when explosion finishes)
         deathCount--;  // Reset the count for the next enemy death
+
+        // Remove this enemy from the spawner's list
+        FindObjectOfType<EnemySpawner>().RemoveDeadEnemies();
     }
+
 
     void OnTriggerEnter2D(Collider2D other)
     {

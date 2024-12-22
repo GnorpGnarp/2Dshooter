@@ -236,7 +236,7 @@ public class PlayerController : MonoBehaviour
         yield return new WaitForSeconds(0.1f);  // Optional small delay for smoother transition
 
         // Show the Game Over screen
-        SceneManager.LoadScene("GameOverScene");
+        SceneManager.LoadScene("GameOver");
         GetComponent<Canvas>().gameObject.SetActive(true);  // Show game over UI
     }
 

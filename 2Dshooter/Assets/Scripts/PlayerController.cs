@@ -199,46 +199,56 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator PlayerDeathSequence()
     {
-        // If the player is already dead, stop the coroutine to avoid running it multiple times
-        if (isDead) yield break;
+        if (isDead) yield break;  // Prevent multiple executions of the death sequence
 
-        isDead = true;  // Set the player to dead, preventing this coroutine from running again
+        isDead = true;  // Mark the player as dead to avoid multiple triggers
+
+        // Save the current level index before loading the game over screen
+        PlayerPrefs.SetInt("LastLevel", SceneManager.GetActiveScene().buildIndex);
 
         Debug.Log("Player died and explosion should play.");
 
-        // Disable the sprite renderer to hide the player during the explosion
-        GetComponent<SpriteRenderer>().enabled = false; // Disable sprite immediately
+        // Disable only the player sprite renderer (keep the rest active)
+        GetComponent<SpriteRenderer>().enabled = false;
 
-        // Ensure audioSource is unmuted and sound plays immediately
+        // Disable player movement by stopping all inputs and interactions (optional)
+        // This is optional depending on how you want to stop the player during the death sequence
+        // Example: You can stop player movement by setting some flags or removing controls here
+
+        // Play the explosion sound, instantiate explosion, etc.
         if (audioSource != null)
         {
-            audioSource.mute = false;  // Ensure it is not muted
+            audioSource.mute = false;
             if (playerExplosionSound != null)
             {
-                Debug.Log("Playing player explosion sound");
-                audioSource.PlayOneShot(playerExplosionSound);  // Play sound immediately
+                audioSource.PlayOneShot(playerExplosionSound);
             }
         }
 
-        // Instantiate the explosion effect (only once)
         if (funnyExplosionPrefab != null)
         {
             Instantiate(funnyExplosionPrefab, transform.position, Quaternion.identity);
         }
 
         // Wait for the explosion sound and effect to finish
-        yield return new WaitForSeconds(explosionDuration);  // Wait for explosion to finish
+        yield return new WaitForSeconds(explosionDuration);
 
-        // Finally, deactivate the player object after the explosion effect and sound finish
-        gameObject.SetActive(false);  // Hide the player object
+        // Instead of disabling the whole GameObject, we leave it active.
+        // If you want to hide the player completely, you can disable specific components:
+        // For example: gameObject.SetActive(false) would make everything inactive (not recommended here)
 
-        // Wait just a bit more, if needed (in case you want to add some delay before game over scene)
-        yield return new WaitForSeconds(0.1f);  // Optional small delay for smoother transition
+        // If you want to make the player completely disappear without affecting the GameObject's functionality:
+        gameObject.GetComponent<Collider>().enabled = false;  // Optionally disable collisions
+        gameObject.GetComponent<PlayerController>().enabled = false;  // Optionally disable player controls
 
-        // Show the Game Over screen
+        // Load the Game Over scene (this is where the game over UI appears)
         SceneManager.LoadScene("GameOver");
-        GetComponent<Canvas>().gameObject.SetActive(true);  // Show game over UI
+
+        // Optional: Keep the GameObject's canvas active if you need any UI to stay visible
+        GetComponent<Canvas>().gameObject.SetActive(true);  // Show Game Over UI
     }
+
+
 
 
 

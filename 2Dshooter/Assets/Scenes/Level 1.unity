@@ -951,7 +951,6 @@ MonoBehaviour:
   yAxisSpawnValue: 4
   spawnedEnemies:
   - {fileID: 0}
-  victoryManager: {fileID: 0}
 --- !u!4 &829898208
 Transform:
   m_ObjectHideFlags: 0
@@ -1170,7 +1169,6 @@ MonoBehaviour:
   yAxisSpawnValue: 4
   spawnedEnemies:
   - {fileID: 0}
-  victoryManager: {fileID: 0}
 --- !u!4 &918440346
 Transform:
   m_ObjectHideFlags: 0

@@ -20,15 +20,18 @@ public class EnemySpawner : MonoBehaviour
 
     private bool gameOver = false; // Flag to indicate the game is over
 
+    private bool allEnemiesDead = false; // Track if all enemies are dead
+
     void Start()
     {
         // Ensure game is not over when the scene starts
         gameOver = false;
+        allEnemiesDead = false;
     }
 
     void Update()
     {
-        // Don't spawn enemies if the game is over
+        // Don't spawn enemies or trigger victory if the game is over
         if (gameOver) return;
 
         timeSinceLastAction += Time.deltaTime;
@@ -39,10 +42,10 @@ public class EnemySpawner : MonoBehaviour
             SpawnEnemy();
         }
 
-        // Check if all enemies are dead and handle victory logic
-        if (spawnedEnemies.Count == 0 && !gameOver)  // Only check once all enemies are destroyed
+        // Check if all enemies are dead and no more are spawning
+        if (spawnedEnemies.Count == 0 && !gameOver && !allEnemiesDead)
         {
-            gameOver = true;  // Mark the game as over so no more enemies spawn
+            allEnemiesDead = true;  // Mark that all enemies are dead
             VictoryManager.instance.ShowVictoryScreen();  // Trigger victory screen
         }
     }
@@ -66,5 +69,12 @@ public class EnemySpawner : MonoBehaviour
     {
         // Remove enemies from the list when they are destroyed
         spawnedEnemies.RemoveAll(enemy => enemy == null);
+
+        // If all enemies are removed, then trigger the victory screen if conditions are met
+        if (spawnedEnemies.Count == 0 && !gameOver && !allEnemiesDead)
+        {
+            allEnemiesDead = true;  // Mark that all enemies are dead
+            VictoryManager.instance.ShowVictoryScreen();  // Trigger victory screen
+        }
     }
 }

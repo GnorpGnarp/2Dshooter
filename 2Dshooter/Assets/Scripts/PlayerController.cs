@@ -202,20 +202,12 @@ public class PlayerController : MonoBehaviour
         if (isDead) yield break;  // Prevent multiple executions of the death sequence
 
         isDead = true;  // Mark the player as dead to avoid multiple triggers
-
-        // Save the current level index before loading the game over screen
-        PlayerPrefs.SetInt("LastLevel", SceneManager.GetActiveScene().buildIndex);
-
-        Debug.Log("Player died and explosion should play.");
+        Debug.Log("Player Death Triggered");
 
         // Disable only the player sprite renderer (keep the rest active)
         GetComponent<SpriteRenderer>().enabled = false;
 
-        // Disable player movement by stopping all inputs and interactions (optional)
-        // This is optional depending on how you want to stop the player during the death sequence
-        // Example: You can stop player movement by setting some flags or removing controls here
-
-        // Play the explosion sound, instantiate explosion, etc.
+        // Play explosion sound and instantiate explosion, etc.
         if (audioSource != null)
         {
             audioSource.mute = false;
@@ -230,22 +222,14 @@ public class PlayerController : MonoBehaviour
             Instantiate(funnyExplosionPrefab, transform.position, Quaternion.identity);
         }
 
-        // Wait for the explosion sound and effect to finish
+        // Wait for explosion duration
         yield return new WaitForSeconds(explosionDuration);
 
-        // Instead of disabling the whole GameObject, we leave it active.
-        // If you want to hide the player completely, you can disable specific components:
-        // For example: gameObject.SetActive(false) would make everything inactive (not recommended here)
+        // Add debug statement before scene load
+        Debug.Log("Explosion complete, loading GameOver scene.");
 
-        // If you want to make the player completely disappear without affecting the GameObject's functionality:
-        gameObject.GetComponent<Collider>().enabled = false;  // Optionally disable collisions
-        gameObject.GetComponent<PlayerController>().enabled = false;  // Optionally disable player controls
-
-        // Load the Game Over scene (this is where the game over UI appears)
+        // Load GameOver scene
         SceneManager.LoadScene("GameOver");
-
-        // Optional: Keep the GameObject's canvas active if you need any UI to stay visible
-        GetComponent<Canvas>().gameObject.SetActive(true);  // Show Game Over UI
     }
 
 

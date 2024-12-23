@@ -13,12 +13,14 @@ public class ScoreManager : MonoBehaviour
         if (instance == null)
         {
             instance = this;
+            DontDestroyOnLoad(gameObject);  // Keep ScoreManager alive between scene loads
         }
         else
         {
             Destroy(gameObject);
         }
     }
+
 
     // Method to add score
     public void AddScore(int points)

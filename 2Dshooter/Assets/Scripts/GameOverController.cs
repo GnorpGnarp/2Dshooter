@@ -1,23 +1,37 @@
 using UnityEngine;
 using UnityEngine.SceneManagement; // To load scenes
 using TMPro; // To interact with TextMesh Pro buttons
+using UnityEngine.UI; // Required for UI buttons
 
-public class GameOverController : MonoBehaviour
+
+public class GameOverMenu : MonoBehaviour
 {
-    // This method will restart the last level the player was on
-    public void RestartLevel()
-    {
-        // Retrieve the last played level index saved in PlayerPrefs
-        int lastLevelIndex = PlayerPrefs.GetInt("LastLevel", 0);  // Default to 0 if no level is saved
+    public Button restartButton; // Link your restart button here in the Inspector
+    public Button mainMenuButton; // Link your main menu button here in the Inspector
 
-        // Load the last played level
-        SceneManager.LoadScene(lastLevelIndex);
+    void Start()
+    {
+        // Check if buttons are assigned, then add listeners
+        if (restartButton != null)
+        {
+            restartButton.onClick.AddListener(OnRestartButtonClicked);
+        }
+
+        if (mainMenuButton != null)
+        {
+            mainMenuButton.onClick.AddListener(OnMainMenuButtonClicked);
+        }
     }
 
-    // This method will load the Main Menu scene
-    public void GoToMainMenu()
+    public void OnRestartButtonClicked()
     {
-        // Assuming your Main Menu scene is named "MainMenu"
-        SceneManager.LoadScene("MainMenu");
+        Debug.Log("Restart Button Clicked!");
+        SceneManager.LoadScene(PlayerPrefs.GetInt("LastLevel")); // Restart the last level
+    }
+
+    public void OnMainMenuButtonClicked()
+    {
+        Debug.Log("Main Menu Button Clicked!");
+        SceneManager.LoadScene("MainMenu"); // Assuming you have a MainMenu scene
     }
 }

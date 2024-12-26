@@ -1,6 +1,7 @@
+using System.Collections; // Make sure this is at the top for IEnumerator and coroutines
+using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
-using UnityEngine;
 
 public class VictoryManager : MonoBehaviour
 {
@@ -11,7 +12,6 @@ public class VictoryManager : MonoBehaviour
     public GameObject nextLevelButton;
     public GameObject quitButton;
 
-    // Add a flag to track whether victory has already been shown
     private bool victoryShown = false;
 
     void Awake()
@@ -31,31 +31,41 @@ public class VictoryManager : MonoBehaviour
     // Method to show the victory screen
     public void ShowVictoryScreen()
     {
-        // Avoid showing the victory screen multiple times
         if (!victoryShown)
         {
             victoryShown = true;
-            victoryScreen.SetActive(true);
-            scoreText.text = "Score: " + ScoreManager.instance.score.ToString();
+            Debug.Log("Victory Screen is being shown");
+            StartCoroutine(ShowVictoryCoroutine());
+        }
+    }
 
-            int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-            int totalScenes = SceneManager.sceneCountInBuildSettings;
 
-            if (currentSceneIndex + 1 < totalScenes)
-            {
-                nextLevelButton.SetActive(true);
-                quitButton.SetActive(false);
-            }
-            else
-            {
-                nextLevelButton.SetActive(false);
-                quitButton.SetActive(true);
-            }
+    private IEnumerator ShowVictoryCoroutine()
+    {
+        // Wait for 1 second before showing the victory screen (you can adjust this)
+        yield return new WaitForSeconds(1f);
+
+        victoryScreen.SetActive(true);
+        scoreText.text = "Score: " + ScoreManager.instance.score.ToString();
+
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        int totalScenes = SceneManager.sceneCountInBuildSettings;
+
+        if (currentSceneIndex + 1 < totalScenes)
+        {
+            nextLevelButton.SetActive(true);
+            quitButton.SetActive(false);
+        }
+        else
+        {
+            nextLevelButton.SetActive(false);
+            quitButton.SetActive(true);
         }
     }
 
     public void LoadNextLevel()
     {
+        Debug.Log("Leading next level...");
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int nextSceneIndex = currentSceneIndex + 1;
         SceneManager.LoadScene(nextSceneIndex);
@@ -71,7 +81,6 @@ public class VictoryManager : MonoBehaviour
 #endif
     }
 
-    // Add a method to reset victory flag (optional, in case you need to retry the level)
     public void ResetVictoryFlag()
     {
         victoryShown = false;

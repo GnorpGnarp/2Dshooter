@@ -949,8 +949,6 @@ MonoBehaviour:
   minXAxispawnValue: -7
   maxXAxisSpawnValue: 7
   yAxisSpawnValue: 4
-  spawnedEnemies:
-  - {fileID: 457488063460820203, guid: 23c0b5aa6cf3e49458a64fca1a7d9c38, type: 3}
 --- !u!4 &829898208
 Transform:
   m_ObjectHideFlags: 0
@@ -1167,8 +1165,6 @@ MonoBehaviour:
   minXAxispawnValue: -7
   maxXAxisSpawnValue: 7
   yAxisSpawnValue: 4
-  spawnedEnemies:
-  - {fileID: 0}
 --- !u!4 &918440346
 Transform:
   m_ObjectHideFlags: 0
@@ -1701,6 +1697,51 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1188292202}
   m_CullTransparentMesh: 1
+--- !u!1 &1228754830
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1228754832}
+  - component: {fileID: 1228754831}
+  m_Layer: 0
+  m_Name: GlobalEnemies
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1228754831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228754830}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bae91322c7ff3444480792d6b1bbc04e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  totalEnemiesToSpawn: 22
+--- !u!4 &1228754832
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1228754830}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.009479245, y: -0.07231602, z: 0.03695366}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1263642262
 GameObject:
   m_ObjectHideFlags: 0
@@ -3999,6 +4040,7 @@ SceneRoots:
   - {fileID: 9162520744500375505}
   - {fileID: 6178797606453563906}
   - {fileID: 890679326}
+  - {fileID: 1228754832}
   - {fileID: 829898208}
   - {fileID: 918440346}
   - {fileID: 153703359}

@@ -1,7 +1,5 @@
-using System.Collections; // Make sure this is at the top for IEnumerator and coroutines
 using UnityEngine;
 using TMPro;
-using UnityEngine.SceneManagement;
 
 public class VictoryManager : MonoBehaviour
 {
@@ -11,8 +9,6 @@ public class VictoryManager : MonoBehaviour
     public TMP_Text scoreText;
     public GameObject nextLevelButton;
     public GameObject quitButton;
-
-    private bool victoryShown = false;
 
     void Awake()
     {
@@ -25,31 +21,17 @@ public class VictoryManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        victoryScreen.SetActive(false);
+        victoryScreen.SetActive(false);  // Hide the victory screen initially
     }
 
-    // Method to show the victory screen
     public void ShowVictoryScreen()
     {
-        if (!victoryShown)
-        {
-            victoryShown = true;
-            Debug.Log("Victory Screen is being shown");
-            StartCoroutine(ShowVictoryCoroutine());
-        }
-    }
+        victoryScreen.SetActive(true);  // Show the victory screen
+        scoreText.text = "Score: " + ScoreManager.instance.score.ToString();  // Display score
 
-
-    private IEnumerator ShowVictoryCoroutine()
-    {
-        // Wait for 1 second before showing the victory screen (you can adjust this)
-        yield return new WaitForSeconds(1f);
-
-        victoryScreen.SetActive(true);
-        scoreText.text = "Score: " + ScoreManager.instance.score.ToString();
-
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        int totalScenes = SceneManager.sceneCountInBuildSettings;
+        // Show next level button or quit button based on the current scene
+        int currentSceneIndex = UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex;
+        int totalScenes = UnityEngine.SceneManagement.SceneManager.sceneCountInBuildSettings;
 
         if (currentSceneIndex + 1 < totalScenes)
         {
@@ -61,28 +43,5 @@ public class VictoryManager : MonoBehaviour
             nextLevelButton.SetActive(false);
             quitButton.SetActive(true);
         }
-    }
-
-    public void LoadNextLevel()
-    {
-        Debug.Log("Leading next level...");
-        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        int nextSceneIndex = currentSceneIndex + 1;
-        SceneManager.LoadScene(nextSceneIndex);
-    }
-
-    public void QuitGame()
-    {
-        Debug.Log("Game Over! Exiting the game...");
-        Application.Quit();
-
-#if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
-#endif
-    }
-
-    public void ResetVictoryFlag()
-    {
-        victoryShown = false;
     }
 }

@@ -1,102 +1,79 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public GameObject enemyPrefab;
-    public float spawnRate = 2f;
-    public int maxEnemies = 10;
-    public float minXAxispawnValue = -8f;
-    public float maxXAxisSpawnValue = 8f;
-    public float yAxisSpawnValue = 4f;
+    public GameObject enemyPrefab;           // The enemy prefab to spawn
+    public float spawnRate = 2f;             // The rate at which enemies spawn (in seconds)
+    public int maxEnemies = 10;              // Max number of enemies in the scene at once
+    public float minXAxispawnValue = -8f;   // Minimum spawn X position
+    public float maxXAxisSpawnValue = 8f;   // Maximum spawn X position
+    public float yAxisSpawnValue = 4f;      // Fixed Y position for enemy spawn
 
-    private float timeSinceLastAction = 0f;
-    public List<GameObject> spawnedEnemies = new List<GameObject>();
-    private bool gameOver = false;
-    private bool allEnemiesDead = false;
-
-    // Counters for spawned and killed enemies
-    private int totalEnemiesSpawned = 0;
-    private int totalEnemiesKilled = 0;
+    private float timeSinceLastAction = 0f;  // Time accumulator for spawn rate
+    private List<GameObject> spawnedEnemies = new List<GameObject>();  // List to track all spawned enemies
 
     void Start()
     {
-        // Ensure game is not over when the scene starts
-        gameOver = false;
-        allEnemiesDead = false;
+        // Optionally, you can initialize anything here if needed
+        Debug.Log("Spawner initialized");
     }
 
     void Update()
     {
-        if (gameOver) return;  // Don't spawn enemies if the game is over
-
+        // Accumulate time since the last spawn
         timeSinceLastAction += Time.deltaTime;
 
-        // Only spawn if we have fewer enemies than the maximum allowed
-        if (timeSinceLastAction >= spawnRate && spawnedEnemies.Count < maxEnemies)
+        // Check if we need to spawn a new enemy
+        if (spawnedEnemies.Count < maxEnemies && timeSinceLastAction >= spawnRate)
         {
             SpawnEnemy();
         }
 
-        // Check if all enemies are dead and trigger victory if conditions are met
-        if (totalEnemiesSpawned == totalEnemiesKilled && totalEnemiesSpawned > 0 && !allEnemiesDead)
+        // Check for dead enemies in the list and remove them
+        for (int i = spawnedEnemies.Count - 1; i >= 0; i--)
         {
-            allEnemiesDead = true;
-            Debug.Log("All enemies spawned and killed. Showing victory screen.");
-            VictoryManager.instance.ShowVictoryScreen();
+            if (spawnedEnemies[i] == null)  // Enemy is dead
+            {
+                // Remove the dead enemy from the list
+                spawnedEnemies.RemoveAt(i);
+
+                // Notify the global manager that an enemy was killed
+                GlobalEnemyManager.instance.IncrementKilled();
+            }
         }
     }
 
+    // Method to spawn a new enemy
     void SpawnEnemy()
     {
-        // Spawn the enemy at a random x position
+        // Randomize the spawn position within the given x range
         float xPosition = Random.Range(minXAxispawnValue, maxXAxisSpawnValue);
         Vector2 spawnPosition = new Vector2(xPosition, yAxisSpawnValue);
 
-        // Instantiate the enemy and add it to the list
-        GameObject spawnedEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity, this.transform);
+        // Instantiate the new enemy at the spawn position
+        GameObject spawnedEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
 
-        // Increment the spawned enemy counter
-        totalEnemiesSpawned++;
-
-        // Reset the time counter and add the spawned enemy to the list
-        timeSinceLastAction = 0f;
+        // Add the new enemy to the list of spawned enemies
         spawnedEnemies.Add(spawnedEnemy);
-    }
 
+        // Notify the global manager that a new enemy was spawned
+        GlobalEnemyManager.instance.IncrementSpawned();
+
+        // Reset the spawn timer to control spawn rate
+        timeSinceLastAction = 0f;
+    }
     public void RemoveDeadEnemies()
     {
-        // Log how many enemies are in the list before removal
-        Debug.Log($"Enemies before removal: {spawnedEnemies.Count}");
-
-        // Remove enemies from the list when they are destroyed
-        spawnedEnemies.RemoveAll(enemy => enemy == null);
-
-        // Log the number of enemies after removal
-        Debug.Log($"Enemies after removal: {spawnedEnemies.Count}");
-
-        // Increment the killed enemy counter
-        totalEnemiesKilled++;
-
-        // Log how many enemies have been killed
-        Debug.Log($"Enemies killed: {totalEnemiesKilled} / {totalEnemiesSpawned}");
-
-        // Check if all enemies are dead and show the victory screen
-        if (totalEnemiesSpawned == totalEnemiesKilled && !allEnemiesDead)
+        // Iterate through the list of spawned enemies in reverse to avoid index issues while removing
+        for (int i = spawnedEnemies.Count - 1; i >= 0; i--)
         {
-            allEnemiesDead = true;
-            Debug.Log("All enemies removed. Triggering victory screen.");
-            VictoryManager.instance.ShowVictoryScreen();
+            if (spawnedEnemies[i] == null)  // Check if the enemy is dead
+            {
+                spawnedEnemies.RemoveAt(i);  // Remove the dead enemy from the list
+            }
         }
     }
 
-
-    // Call this method to reset the counters when starting a new level or game session
-    public void ResetCounters()
-    {
-        totalEnemiesSpawned = 0;
-        totalEnemiesKilled = 0;
-        allEnemiesDead = false;
-        gameOver = false;
-    }
 }

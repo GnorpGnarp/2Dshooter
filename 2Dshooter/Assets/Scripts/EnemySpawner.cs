@@ -64,7 +64,7 @@ public class EnemySpawner : MonoBehaviour
         // Reset the spawn timer to control spawn rate
         timeSinceLastAction = 0f;
     }
-    public void RemoveDeadEnemies()
+public void RemoveDeadEnemies()
     {
         // Iterate through the list of spawned enemies in reverse to avoid index issues while removing
         for (int i = spawnedEnemies.Count - 1; i >= 0; i--)

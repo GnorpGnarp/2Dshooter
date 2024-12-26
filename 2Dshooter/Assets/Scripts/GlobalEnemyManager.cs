@@ -9,6 +9,7 @@ public class GlobalEnemyManager : MonoBehaviour
 
     private int totalEnemiesSpawned = 0;     // Track the total number of spawned enemies
     private int totalEnemiesKilled = 0;      // Track the total number of killed enemies
+    private bool allEnemiesSpawned = false; // Track if all enemies have been spawned
 
     void Awake()
     {
@@ -32,6 +33,7 @@ public class GlobalEnemyManager : MonoBehaviour
         // Check if the number of spawned enemies has reached the specified limit
         if (totalEnemiesSpawned >= totalEnemiesToSpawn)
         {
+            allEnemiesSpawned = true;
             Debug.Log("All enemies have been spawned.");
         }
     }
@@ -42,8 +44,8 @@ public class GlobalEnemyManager : MonoBehaviour
         totalEnemiesKilled++;
         Debug.Log($"Total enemies killed: {totalEnemiesKilled} / {totalEnemiesSpawned}");
 
-        // Check if all enemies have been killed
-        if (totalEnemiesSpawned == totalEnemiesKilled)
+        // Check if all enemies have been killed and all spawned
+        if (allEnemiesSpawned && totalEnemiesSpawned == totalEnemiesKilled)
         {
             Debug.Log("All enemies killed! Showing victory screen.");
             VictoryManager.instance.ShowVictoryScreen();  // Trigger victory screen

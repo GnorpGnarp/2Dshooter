@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class GlobalEnemyManager : MonoBehaviour
@@ -10,6 +11,8 @@ public class GlobalEnemyManager : MonoBehaviour
     private int totalEnemiesSpawned = 0;     // Track the total number of spawned enemies
     private int totalEnemiesKilled = 0;      // Track the total number of killed enemies
     private bool allEnemiesSpawned = false; // Track if all enemies have been spawned
+
+    private bool victoryScreenTriggered = false;  // Flag to ensure victory screen is only shown once
 
     void Awake()
     {
@@ -27,10 +30,11 @@ public class GlobalEnemyManager : MonoBehaviour
     // Called when an enemy is spawned
     public void IncrementSpawned()
     {
+        if (allEnemiesSpawned) return;  // Prevent spawning once all enemies have been spawned.
+
         totalEnemiesSpawned++;
         Debug.Log($"Total enemies spawned: {totalEnemiesSpawned}");
 
-        // Check if the number of spawned enemies has reached the specified limit
         if (totalEnemiesSpawned >= totalEnemiesToSpawn)
         {
             allEnemiesSpawned = true;
@@ -41,18 +45,31 @@ public class GlobalEnemyManager : MonoBehaviour
     // Called when an enemy is killed
     public void IncrementKilled()
     {
+        // Don't allow scoring if the victory screen has been triggered
+        if (victoryScreenTriggered) return;
+
         totalEnemiesKilled++;
         Debug.Log($"Total enemies killed: {totalEnemiesKilled} / {totalEnemiesSpawned}");
 
-        // Check if all enemies have been killed and all spawned
+        // Check if all enemies have been spawned and killed
         if (allEnemiesSpawned && totalEnemiesSpawned == totalEnemiesKilled)
         {
             Debug.Log("All enemies killed! Showing victory screen.");
-            VictoryManager.instance.ShowVictoryScreen();  // Trigger victory screen
+            victoryScreenTriggered = true;
+
+            // Start the coroutine to show the victory screen with a delay
+            StartCoroutine(ShowVictoryWithDelay());
         }
     }
 
-    // Getter methods (optional)
-    public int GetTotalEnemiesSpawned() => totalEnemiesSpawned;
-    public int GetTotalEnemiesKilled() => totalEnemiesKilled;
+    private IEnumerator ShowVictoryWithDelay()
+    {
+        // Wait for 0.5 seconds before continuing
+        yield return new WaitForSeconds(0.5f);
+
+        // Trigger the victory screen
+        VictoryManager.instance.ShowVictoryScreen();
+    }
+
+
 }

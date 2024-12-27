@@ -25,13 +25,14 @@ public class EnemySpawner : MonoBehaviour
         // Accumulate time since the last spawn
         timeSinceLastAction += Time.deltaTime;
 
-        // Check if we need to spawn a new enemy
+        // Only spawn a new enemy if the rate has passed and we don't have too many enemies already
         if (spawnedEnemies.Count < maxEnemies && timeSinceLastAction >= spawnRate)
         {
             SpawnEnemy();
+            timeSinceLastAction = 0f;  // Reset the spawn timer after spawning an enemy
         }
 
-        // Check for dead enemies in the list and remove them
+        // Check for dead enemies and remove them from the list
         for (int i = spawnedEnemies.Count - 1; i >= 0; i--)
         {
             if (spawnedEnemies[i] == null)  // Enemy is dead
@@ -44,6 +45,7 @@ public class EnemySpawner : MonoBehaviour
             }
         }
     }
+
 
     // Method to spawn a new enemy
     void SpawnEnemy()

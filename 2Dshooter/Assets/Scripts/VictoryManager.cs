@@ -60,6 +60,7 @@ public class VictoryManager : MonoBehaviour
 
         // Load the next scene by index
         SceneManager.LoadScene(nextSceneIndex);
+        ScoreManager.score = 0;
     }
 
     // Button function to quit the game

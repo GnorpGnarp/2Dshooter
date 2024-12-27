@@ -27,11 +27,13 @@ public class GameOverMenu : MonoBehaviour
     {
         Debug.Log("Restart Button Clicked!");
         SceneManager.LoadScene(PlayerPrefs.GetInt("LastLevel")); // Restart the last level
+        ScoreManager.score = 0;
     }
 
     public void OnMainMenuButtonClicked()
     {
         Debug.Log("Main Menu Button Clicked!");
         SceneManager.LoadScene("MainMenu"); // Assuming you have a MainMenu scene
+        ScoreManager.score = 0;
     }
 }

@@ -8,9 +8,9 @@ public class GameOverScoreDisplay : MonoBehaviour
     void Start()
     {
         // Check if the ScoreManager instance exists and show the score
-        if (gameOverScoreText != null && ScoreManager.instance != null)
+        if (gameOverScoreText != null)
         {
-            gameOverScoreText.text = "Your Score: " + ScoreManager.instance.score.ToString();
+            gameOverScoreText.text = "Your Score: " + ScoreManager.score.ToString();  // Fix: Directly use static score
         }
     }
 }

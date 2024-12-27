@@ -1,37 +1,46 @@
 using UnityEngine;
-using TMPro;  // Ensure TextMesh Pro is being used
+using TMPro;
 
 public class ScoreManager : MonoBehaviour
 {
-    public static ScoreManager instance;  // Singleton for easy access
-    public int score = 0;
-    public TMP_Text scoreText;  // Use TMP_Text instead of Text
+    // Singleton instance
+    public static ScoreManager instance;
+
+    // Static score variable to store score globally
+    public static int score = 0;
+
+    public TMP_Text scoreText;  // For displaying the score in UI
 
     void Awake()
     {
-        // Ensure there's only one instance of ScoreManager
+        // Ensure that there is only one instance of ScoreManager
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);  // Keep ScoreManager alive between scene loads
+            DontDestroyOnLoad(gameObject);  // Optionally make the ScoreManager persist across scenes
         }
         else
         {
-            Destroy(gameObject);
+            Destroy(gameObject);  // Destroy duplicates
         }
-    }
 
+        // Initialize the score display immediately after the script starts
+        UpdateScoreDisplay();
+    }
 
     // Method to add score
     public void AddScore(int points)
     {
-        score += points;
-        UpdateScoreDisplay();
+        score += points;  // Modify the static score
+        UpdateScoreDisplay();  // Update the UI with the new score
     }
 
     // Update the UI with the current score
     private void UpdateScoreDisplay()
     {
-        scoreText.text = score.ToString();  // Update TMP_Text with the current score
+        if (scoreText != null)
+        {
+            scoreText.text = score.ToString();  // Update TMP_Text with the static score
+        }
     }
 }

@@ -11,7 +11,6 @@ public class VictoryManager : MonoBehaviour
     public GameObject nextLevelButton;
     public GameObject quitButton;
     public EnemySpawner[] enemySpawners;
-
     void Awake()
     {
         if (instance == null)
@@ -29,7 +28,7 @@ public class VictoryManager : MonoBehaviour
     public void ShowVictoryScreen()
     {
         victoryScreen.SetActive(true);  // Show the victory screen
-        scoreText.text = "Score: " + ScoreManager.instance.score.ToString();  // Display score
+        scoreText.text = "Score: " + ScoreManager.score.ToString();        // Display score
 
         // Disable enemy spawners when the victory screen is shown
         foreach (var spawner in enemySpawners)

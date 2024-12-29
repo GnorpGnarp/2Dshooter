@@ -27,15 +27,16 @@ public class VictoryManager : MonoBehaviour
 
     public void ShowVictoryScreen()
     {
-        victoryScreen.SetActive(true);  // Show the victory screen
-        scoreText.text = "Score: " + ScoreManager.score.ToString();        // Display score
-
-        // Disable enemy spawners when the victory screen is shown
         foreach (var spawner in enemySpawners)
         {
             spawner.enabled = false;  // Disable the spawner to stop enemy spawning
         }
 
+        victoryScreen.SetActive(true);  // Show the victory screen
+        scoreText.text = "Score: " + ScoreManager.score.ToString();        // Display score
+
+        // Disable enemy spawners when the victory screen is shown
+       
         // Show next level button or quit button based on the current scene
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
         int totalScenes = SceneManager.sceneCountInBuildSettings;

@@ -915,6 +915,7 @@ MonoBehaviour:
   quitButton: {fileID: 440603527}
   enemySpawners:
   - {fileID: 898298012}
+  - {fileID: 1413655677}
 --- !u!114 &573691474
 MonoBehaviour:
   m_ObjectHideFlags: 0
